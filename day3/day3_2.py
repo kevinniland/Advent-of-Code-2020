@@ -1,15 +1,24 @@
-tree = '#'
-num_trees = 0
-currX = 0
-currY = 0
-right = 1
-down = 2
+from functools import reduce
 
-with open('./input') as treemap:
-    for level in treemap:
+slopes = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
+tree_list = []
+tree = '#'
+
+input_file = open('./input')
+tree_map = input_file.readlines()
+input_file.close()
+
+for right, down in slopes:
+    currX, currY, counter = 0, 0, 0
+
+    while currY < len(tree_map):
+        level = tree_map[currY]
+
         if level[currX] == tree:
-            num_trees += 1
+            counter += 1
+
         currX = (currX + right) % (len(level) - 1)
         currY += down
+    tree_list.append(counter)
 
-print(num_trees)
+print(reduce(lambda a, b: a * b, tree_list))
